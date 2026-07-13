@@ -59,14 +59,14 @@ export const materials: Material[] = [
     name: "Coconut-shell activated carbon",
     role: "Adsorbent",
     body: "A high-surface-area carbon that binds dye molecules. It works well, but as a loose powder it is hard to recover from treated water.",
-    photo: "img-9500.jpg",
+    photo: "material-carbon.png",
     accent: "teal",
   },
   {
     name: "Sodium alginate",
     role: "Bead material",
     body: "A polymer from seaweed that gels on contact with calcium chloride. It traps the carbon inside a soft, biodegradable bead that is easy to lift out of water.",
-    photo: "chitosan-coat-9497.jpg",
+    photo: "material-alginate.png",
     accent: "teal",
   },
   {
@@ -80,7 +80,7 @@ export const materials: Material[] = [
     name: "Procion MX Turquoise",
     role: "Target dye",
     body: "C.I. Reactive Blue 140, the anionic reactive dye used in this study. It was dissolved in the water the beads had to treat.",
-    photo: "img-9531.jpg",
+    photo: "material-procion.jpg",
     accent: "clay",
   },
 ];

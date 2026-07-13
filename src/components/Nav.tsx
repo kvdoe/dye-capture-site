@@ -99,15 +99,10 @@ export default function Nav() {
         }`}
       >
         <nav className="container-x flex h-[72px] items-center justify-between" aria-label="Primary navigation">
-          <a href="#top" className="group flex items-center gap-3" aria-label="Dye Capture, back to top">
-            <span className={`relative grid h-9 w-9 place-items-center border ${scrolled ? "border-ink/25" : "border-cream/35"}`}>
-              <span className="h-2.5 w-2.5 rounded-full bg-teal transition-transform duration-300 group-hover:scale-125" />
-              <span className="absolute inset-1.5 rounded-full border border-teal/25" />
-            </span>
-            <span className="font-display text-[0.95rem] font-semibold leading-[0.92] tracking-[-0.045em]">
-              DYE
-              <br />
-              <span className="text-teal">CAPTURE</span>
+          <a href="#top" className="group flex items-center" aria-label="DYEVERGE, back to top">
+            <span className="font-display text-2xl font-extrabold uppercase leading-none tracking-[-0.02em] sm:text-3xl">
+              <span className="text-teal">DYE</span>
+              <span className={scrolled ? "text-ink" : "text-cream"}>VERGE</span>
             </span>
           </a>
 

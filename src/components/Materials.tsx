@@ -57,7 +57,7 @@ export default function Materials() {
     <section ref={sectionRef} id="materials" className="relative overflow-hidden bg-cream px-5 py-16 text-ink sm:px-8 lg:px-12 lg:py-24">
       <div className="mx-auto max-w-[1500px]">
         <h2 className="max-w-[1450px] font-sans text-[clamp(2.3rem,4.6vw,4.8rem)] font-normal leading-[0.98] tracking-[-0.05em]">
-          We seal coconut-shell carbon inside alginate beads and compare a chitosan coating.
+          The materials used in this study.
         </h2>
 
         <div className="mt-12 h-px w-full overflow-hidden bg-ink/15">
@@ -79,18 +79,18 @@ export default function Materials() {
                   selected ? "md:flex-[4.3_1_0%]" : "md:flex-[1_1_0%]"
                 }`}
               >
-                <div className="material-media absolute -inset-y-[10%] inset-x-0">
+                <div className="material-media absolute inset-0 bg-[#0a1226]">
                   <Image
                     src={photoSrc(material.photo)}
                     alt={material.name}
                     fill
-                    className={`object-cover transition-[filter,transform] duration-700 ${selected ? "scale-[1.015] saturate-100" : "scale-105 saturate-50 md:brightness-75"}`}
+                    className={`object-contain p-3 transition-[transform,opacity] duration-700 ${selected ? "scale-100 opacity-100" : "scale-95 opacity-80"}`}
                     sizes={selected ? "(max-width:767px) 86vw, 58vw" : "(max-width:767px) 86vw, 16vw"}
                   />
                 </div>
                 <div className={`absolute inset-0 transition-colors duration-700 ${selected ? "bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" : "bg-ink/30 md:bg-ink/50"}`} />
 
-                <span className={`absolute text-cream transition-all duration-700 ${selected ? "left-6 top-6 text-3xl sm:left-8 sm:top-8 sm:text-5xl" : "left-1/2 top-8 -translate-x-1/2 text-2xl md:left-1/2 md:top-8 md:origin-top-left md:translate-x-3 md:rotate-90 md:whitespace-nowrap"}`}>
+                <span className={`absolute text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-700 ${selected ? "left-6 top-6 text-3xl sm:left-8 sm:top-8 sm:text-5xl" : "left-1/2 top-8 -translate-x-1/2 text-2xl md:left-1/2 md:top-8 md:origin-top-left md:translate-x-3 md:rotate-90 md:whitespace-nowrap"}`}>
                   {material.name}
                 </span>
 
