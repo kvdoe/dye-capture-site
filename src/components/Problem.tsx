@@ -84,8 +84,8 @@ export default function Problem() {
               </h2>
 
               <div className="problem-support mt-10 grid gap-6 border-t border-ink/20 pt-6 sm:grid-cols-2">
-                <p className="max-w-[46ch] text-sm leading-relaxed text-ink/65 sm:text-base">{problemBody[0]}</p>
-                <p className="max-w-[46ch] text-sm leading-relaxed text-ink/65 sm:text-base">{problemBody[1]}</p>
+                <p className="max-w-[46ch] text-sm leading-relaxed text-ink sm:text-base">{problemBody[0]}</p>
+                <p className="max-w-[46ch] text-sm leading-relaxed text-ink sm:text-base">{problemBody[1]}</p>
               </div>
             </div>
 

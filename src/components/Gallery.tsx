@@ -22,7 +22,6 @@ const FEATURED_FILES = [
 
 export default function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
-  const [paused, setPaused] = useState(false);
 
   const photos = useMemo(
     () => FEATURED_FILES.map((file) => GALLERY.find((photo) => photo.file === file)).filter((photo): photo is Photo => Boolean(photo)),
@@ -43,23 +42,16 @@ export default function Gallery() {
           The experiment, documented.
         </h2>
         <p className="max-w-[30ch] text-right font-mono text-[0.62rem] uppercase leading-relaxed tracking-[0.14em] text-cream/45">
-          Auto-playing reel &middot; Hover to pause &middot; Click any photo to enlarge
+          Auto-playing reel &middot; Click any photo to enlarge
         </p>
       </div>
 
-      <div
-        className="relative z-10 flex flex-col gap-3"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
+      <div className="relative z-10 flex flex-col gap-3">
         {rows.map((row) => (
           <div
             key={row.key}
             className="gallery-marquee flex w-max items-stretch"
-            style={{
-              animationPlayState: paused ? "paused" : "running",
-              animationDirection: row.reverse ? "reverse" : "normal",
-            }}
+            style={{ animationDirection: row.reverse ? "reverse" : "normal" }}
           >
             {[0, 1].map((copy) => (
               <div key={copy} aria-hidden={copy === 1 ? "true" : undefined} className="flex items-stretch gap-3 pr-3">
