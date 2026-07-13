@@ -29,6 +29,11 @@ export default function Gallery() {
     [],
   );
 
+  const rows: { key: string; items: Photo[]; reverse: boolean }[] = [
+    { key: "row1", items: photos, reverse: false },
+    { key: "row2", items: [...photos].reverse(), reverse: true },
+  ];
+
   return (
     <section id="gallery" className="relative overflow-hidden bg-ink py-20 text-cream lg:py-28">
       <div className="pointer-events-none absolute inset-0 water-gradient opacity-15" />
@@ -43,38 +48,51 @@ export default function Gallery() {
       </div>
 
       <div
-        className="gallery-marquee relative z-10 flex w-max items-stretch"
-        style={{ animationPlayState: paused ? "paused" : "running" }}
+        className="relative z-10 flex flex-col gap-3"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        {[0, 1].map((copy) => (
-          <div key={copy} aria-hidden={copy === 1 ? "true" : undefined} className="flex items-stretch gap-3 pr-3">
-            {photos.map((photo, photoIndex) => (
-              <button
-                key={`${copy}-${photo.file}`}
-                type="button"
-                tabIndex={copy === 1 ? -1 : 0}
-                onClick={() => setIndex(photoIndex)}
-                className="group relative h-[300px] w-[78vw] shrink-0 overflow-hidden border border-cream/20 text-left sm:h-[360px] sm:w-[480px]"
-                aria-label={`Open photograph: ${photo.alt}`}
-              >
-                <Image
-                  src={photoSrc(photo.file)}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
-                  sizes="(max-width: 640px) 78vw, 480px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent" />
-                <span className="click-cue absolute right-3 top-3 z-10 bg-ink/60 text-cream backdrop-blur-sm transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
-                  Click to enlarge
-                </span>
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-teal-soft">{photo.cat}</p>
-                  <p className="mt-1 truncate text-xs leading-relaxed text-cream/85">{photo.alt}</p>
-                </div>
-              </button>
+        {rows.map((row) => (
+          <div
+            key={row.key}
+            className="gallery-marquee flex w-max items-stretch"
+            style={{
+              animationPlayState: paused ? "paused" : "running",
+              animationDirection: row.reverse ? "reverse" : "normal",
+            }}
+          >
+            {[0, 1].map((copy) => (
+              <div key={copy} aria-hidden={copy === 1 ? "true" : undefined} className="flex items-stretch gap-3 pr-3">
+                {row.items.map((photo) => {
+                  const photoIndex = photos.indexOf(photo);
+                  return (
+                    <button
+                      key={`${row.key}-${copy}-${photo.file}`}
+                      type="button"
+                      tabIndex={copy === 1 ? -1 : 0}
+                      onClick={() => setIndex(photoIndex)}
+                      className="group relative h-[230px] w-[68vw] shrink-0 overflow-hidden border border-cream/20 text-left sm:h-[280px] sm:w-[400px]"
+                      aria-label={`Open photograph: ${photo.alt}`}
+                    >
+                      <Image
+                        src={photoSrc(photo.file)}
+                        alt={photo.alt}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.035] group-focus-visible:scale-[1.035]"
+                        sizes="(max-width: 640px) 68vw, 400px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent" />
+                      <span className="click-cue absolute right-3 top-3 z-10 bg-ink/60 text-cream backdrop-blur-sm transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
+                        Click to enlarge
+                      </span>
+                      <div className="absolute inset-x-0 bottom-0 p-4">
+                        <p className="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-teal-soft">{photo.cat}</p>
+                        <p className="mt-1 truncate text-xs leading-relaxed text-cream/85">{photo.alt}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             ))}
           </div>
         ))}

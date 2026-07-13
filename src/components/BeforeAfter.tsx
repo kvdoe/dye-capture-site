@@ -34,7 +34,7 @@ export default function BeforeAfter({
   return (
     <div
       ref={ref}
-      className="absolute inset-0 cursor-ew-resize select-none overflow-hidden"
+      className="absolute inset-0 cursor-ew-resize select-none overflow-hidden bg-[#e9edf3]"
       style={{ touchAction: "none" }}
       onPointerDown={(e) => {
         dragging.current = true;
@@ -63,14 +63,14 @@ export default function BeforeAfter({
       }}
     >
       {/* After (treated) — base layer */}
-      <Image src={afterSrc} alt={afterAlt} fill className="pointer-events-none object-cover" sizes="(max-width:767px) 100vw, 54vw" priority />
+      <Image src={afterSrc} alt={afterAlt} fill className="pointer-events-none object-contain" sizes="(max-width:767px) 100vw, 54vw" priority />
       <span className="pointer-events-none absolute bottom-4 right-4 z-20 bg-teal px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-white">
         {afterLabel}
       </span>
 
       {/* Before (dyed) — clipped to left of handle */}
       <div className="pointer-events-none absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <Image src={beforeSrc} alt={beforeAlt} fill className="object-cover" sizes="(max-width:767px) 100vw, 54vw" />
+        <Image src={beforeSrc} alt={beforeAlt} fill className="object-contain" sizes="(max-width:767px) 100vw, 54vw" />
         <span className="absolute bottom-4 left-4 z-20 bg-ink px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-white">
           {beforeLabel}
         </span>
