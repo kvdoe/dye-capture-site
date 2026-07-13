@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Dye Capture bead and water icon</title>
+  <rect width="64" height="64" rx="14" fill="#F4EFE5" />
+  <circle cx="32" cy="24" r="12" fill="#1F211F" />
+  <circle cx="28" cy="20" r="2" fill="#5B929B" />
+  <circle cx="36.5" cy="23" r="2.5" fill="#DCE9EA" />
+  <circle cx="31" cy="29" r="1.75" fill="#1F6F78" />
+  <path
+    d="M11 43c7-5 13-5 21 0s14 5 21 0"
+    fill="none"
+    stroke="#164C53"
+    stroke-linecap="round"
+    stroke-width="6"
+  />
+  <path
+    d="M14 52c6-3.5 11-3.5 18 0s12 3.5 18 0"
+    fill="none"
+    stroke="#5B929B"
+    stroke-linecap="round"
+    stroke-width="4"
+  />
+</svg>

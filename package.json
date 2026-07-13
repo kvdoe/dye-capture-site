@@ -1,0 +1,43 @@
+{
+  "name": "dye-capture-site",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "24.x"
+  },
+  "overrides": {
+    "postcss": "$postcss"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "convert-images": "node scripts/convert-images.mjs"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "framer-motion": "^12.42.2",
+    "gsap": "^3.15.0",
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.10",
+    "heic-convert": "^2.1.0",
+    "pdf-to-img": "^6.2.0",
+    "playwright": "^1.61.1",
+    "postcss": "^8.5.17",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.9.3"
+  }
+}
