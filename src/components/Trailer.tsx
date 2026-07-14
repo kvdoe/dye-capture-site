@@ -32,7 +32,7 @@ export default function Trailer() {
               loop
               playsInline
               controls
-              preload="metadata"
+              preload="auto"
               aria-label="DYEVERGE trailer"
             />
             <span className="trailer-cue pointer-events-none absolute left-1/2 top-4 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#60a5fa]/50 bg-black/70 px-4 py-2 font-mono text-[0.6rem] uppercase tracking-[0.2em] backdrop-blur-sm sm:text-xs">
