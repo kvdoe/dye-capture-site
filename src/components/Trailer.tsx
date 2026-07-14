@@ -22,18 +22,26 @@ export default function Trailer() {
           </p>
         </div>
 
-        <div className="relative border border-white/15 bg-black shadow-[0_0_60px_rgba(37,99,235,0.25)]">
-          <video
-            className="block w-full"
-            src="/dyeverge.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-            aria-label="DYEVERGE trailer"
-          />
+        <div>
+          <div className="relative border border-white/15 bg-black shadow-[0_0_60px_rgba(37,99,235,0.25)]">
+            <video
+              className="block w-full"
+              src="/dyeverge.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              preload="metadata"
+              aria-label="DYEVERGE trailer"
+            />
+            <span className="trailer-cue pointer-events-none absolute left-1/2 top-4 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#60a5fa]/50 bg-black/70 px-4 py-2 font-mono text-[0.6rem] uppercase tracking-[0.2em] backdrop-blur-sm sm:text-xs">
+              &#128266; Unmute for the full experience
+            </span>
+          </div>
+          <p className="trailer-cue mt-4 text-center font-mono text-[0.68rem] uppercase tracking-[0.22em]">
+            &#128266; Tap the speaker icon to unmute &mdash; sound on for the full experience
+          </p>
         </div>
       </div>
     </section>
