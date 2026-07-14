@@ -73,7 +73,7 @@ export const materials: Material[] = [
     name: "Chitosan",
     role: "Coating (tested)",
     body: "A positively charged biopolymer. We coated half of the beads to test whether its charge would attract more of the negatively charged dye.",
-    photo: "img-9611.jpg",
+    photo: "material-chitosan.png",
     accent: "clay",
   },
   {

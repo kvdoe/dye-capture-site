@@ -29,11 +29,19 @@ const chartX = [72, 320, 568] as const;
 const chartTop = 24;
 const chartBottom = 194;
 
-const beadSpecs = Array.from({ length: 30 }, (_, index) => ({
-  left: 4 + ((index * 37) % 91),
-  bottom: 4 + ((index * 19) % 27),
-  size: 10 + ((index * 7) % 15),
-  depth: 0.62 + ((index * 11) % 32) / 100,
+const beadRandom = (() => {
+  let seed = 20240713;
+  return () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+})();
+
+const beadSpecs = Array.from({ length: 34 }, () => ({
+  left: 3 + beadRandom() * 90,
+  bottom: 2 + beadRandom() * 66,
+  size: 9 + Math.floor(beadRandom() * 16),
+  depth: 0.55 + beadRandom() * 0.4,
 }));
 
 function chartY(value: number) {
@@ -184,19 +192,20 @@ export default function CinematicResults() {
         );
         const mode = coatingRef.current;
         const removal = interpolate(dyeRemoval[mode], boundedProgress);
-        // Remaining dye fraction drives opacity: high removal => nearly clear water.
-        const remaining = gsap.utils.clamp(0.04, 0.94, (1 - removal / 100) * 0.98);
         const graphX = interpolate(chartX, boundedProgress);
         const graphY = chartY(interpolate(dyeRemoval[mode], boundedProgress));
 
-        water.style.background = `linear-gradient(180deg, rgba(96, 165, 250, ${Math.max(
-          remaining - 0.14,
-          0.02,
-        )}) 0%, rgba(29, 78, 216, ${remaining}) 100%)`;
-        water.style.boxShadow = `inset 0 24px 42px rgba(191, 219, 254, ${Math.max(
-          0.05,
-          remaining * 0.38,
-        )}), 0 -8px 30px rgba(96, 165, 250, ${remaining * 0.3})`;
+        // dye = 1 when fully dyed, 0 when fully removed. Vivid artificial
+        // turquoise fades to pale, nearly clear water as removal increases.
+        const dye = gsap.utils.clamp(0, 1, 1 - removal / 100);
+        const mix = (from: number, to: number) => from + (to - from) * dye;
+        const r = Math.round(mix(226, 6));
+        const g = Math.round(mix(246, 224));
+        const b = Math.round(mix(250, 214));
+        const alphaTop = mix(0.14, 0.72);
+        const alphaBottom = mix(0.24, 0.94);
+        water.style.background = `linear-gradient(180deg, rgba(${r}, ${g}, ${b}, ${alphaTop}) 0%, rgba(${r}, ${g}, ${b}, ${alphaBottom}) 100%)`;
+        water.style.boxShadow = `inset 0 24px 42px rgba(${r}, ${g}, ${b}, ${mix(0.1, 0.4)}), 0 -8px 30px rgba(20, 220, 210, ${dye * 0.4})`;
 
         if (marker) {
           marker.setAttribute("x1", graphX.toString());
@@ -577,7 +586,7 @@ export default function CinematicResults() {
                   className="absolute inset-x-0 bottom-0 h-[78%] overflow-hidden transition-[background,box-shadow] duration-500"
                   style={{
                     background:
-                      "linear-gradient(180deg, rgba(59, 130, 246, 0.57) 0%, rgba(29, 78, 216, 0.65) 100%)",
+                      "linear-gradient(180deg, rgba(20, 220, 210, 0.55) 0%, rgba(6, 224, 205, 0.82) 100%)",
                   }}
                 >
                   <div aria-hidden="true" className="absolute -top-9 left-0 h-16 w-[200%]" style={{ animation: "wave-slide 6s linear infinite" }}>
