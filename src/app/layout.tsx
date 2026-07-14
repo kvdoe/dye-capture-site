@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
-  other: { "x-build": "gitv12" },
+  other: { "x-build": "gitv13" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

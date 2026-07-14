@@ -1,6 +1,7 @@
 import SmoothScroll from "@/components/SmoothScroll";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import Trailer from "@/components/Trailer";
 import Problem from "@/components/Problem";
 import Materials from "@/components/Materials";
 import Method from "@/components/Method";
@@ -21,6 +22,7 @@ export default function Home() {
       <Nav />
       <main id="main-content" className="w-full max-w-full overflow-x-clip">
         <Hero />
+        <Trailer />
         <Problem />
         <Poster />
         <Materials />
