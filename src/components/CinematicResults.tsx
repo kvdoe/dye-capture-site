@@ -153,7 +153,6 @@ export default function CinematicResults() {
   const activeDotRef = useRef<SVGCircleElement>(null);
   const removalNumberRef = useRef<HTMLSpanElement>(null);
   const swellingNumberRef = useRef<HTMLSpanElement>(null);
-  const penaltyNumberRef = useRef<HTMLSpanElement>(null);
   const waterNumberRef = useRef<HTMLSpanElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const motionProgressRef = useRef({ value: 0 });
@@ -162,7 +161,6 @@ export default function CinematicResults() {
   const previousMetricsRef = useRef({
     removal: dyeRemoval.uncoated[0],
     swelling: massGain.uncoated[0],
-    penalty: coatingPenalty[0],
     water: waterAbsorbed.uncoated,
   });
   const { ref: viewRef, inView } = useInView<HTMLDivElement>("10% 0px");
@@ -176,9 +174,6 @@ export default function CinematicResults() {
   const currentSwelling = massGain[coating][activeIndex];
   const currentRemovalSd = dyeRemovalSd[coating][activeIndex];
   const currentSwellingSd = massGainSd[coating][activeIndex];
-  const currentPenalty = coatingPenalty[activeIndex];
-  const currentPenaltyP = coatingPenaltyP[activeIndex];
-  const currentPenaltySignificant = coatingPenaltySignificant[activeIndex];
   const currentGroup = tukeyGroups[coating][activeIndex];
   const currentWater = waterAbsorbed[coating];
   const currentBeadVisual = beadVisual(activeCarbon);
@@ -305,7 +300,6 @@ export default function CinematicResults() {
       const next = {
         removal: currentRemoval,
         swelling: currentSwelling,
-        penalty: currentPenalty,
         water: currentWater,
       };
 
@@ -324,14 +318,6 @@ export default function CinematicResults() {
           next.swelling,
           1,
           "%",
-          reducedMotion,
-        ),
-        metricTween(
-          penaltyNumberRef.current,
-          previous.penalty,
-          next.penalty,
-          1,
-          " pts",
           reducedMotion,
         ),
         metricTween(
@@ -371,7 +357,6 @@ export default function CinematicResults() {
         activeIndex,
         currentRemoval,
         currentSwelling,
-        currentPenalty,
         currentWater,
       ],
     },
@@ -663,7 +648,7 @@ export default function CinematicResults() {
                 </div>
               </div>
 
-              <div className="absolute bottom-5 left-5 right-5 z-30 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-white/20 bg-[#05070f]/65 pt-4 backdrop-blur-md sm:grid-cols-4">
+              <div className="absolute bottom-5 left-5 right-5 z-30 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-white/20 bg-[#05070f]/65 pt-4 backdrop-blur-md sm:grid-cols-3">
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
                     Apparent dye removal
@@ -696,21 +681,6 @@ export default function CinematicResults() {
                 </div>
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Lost to coating at {activeCarbon}% carbon
-                  </p>
-                  <span
-                    ref={penaltyNumberRef}
-                    aria-hidden="true"
-                    className="mt-1 block font-mono text-[clamp(1.45rem,3vw,2.35rem)] tabular-nums text-[#f4f7ff]"
-                  >
-                    {formatPenalty(currentPenalty)}
-                  </span>
-                  <span aria-hidden="true" className={`block font-mono text-[0.62rem] ${currentPenaltySignificant ? "text-[#93c5fd]" : "text-white/55"}`}>
-                    {currentPenaltySignificant ? "significant, " : "not significant, "}{currentPenaltyP}
-                  </span>
-                </div>
-                <div data-metric-label>
-                  <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
                     Solution drawn into beads
                   </p>
                   <span aria-hidden="true" className="mt-1 block font-mono text-[clamp(1.2rem,2.3vw,1.95rem)] leading-tight tabular-nums text-[#f4f7ff]">
@@ -726,7 +696,7 @@ export default function CinematicResults() {
               </div>
 
               <p className="sr-only" aria-live="polite">
-                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Apparent dye removal {formatRemoval(currentRemoval)} plus or minus {currentRemovalSd.toFixed(1)}, Tukey group {currentGroup}. Wet-bead mass gain {currentSwelling.toFixed(1)}%. Reduction attributable to coating at this loading {formatPenalty(currentPenalty)}, {currentPenaltyP}. Solution drawn into beads about {currentWater} mL.
+                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Apparent dye removal {formatRemoval(currentRemoval)} plus or minus {currentRemovalSd.toFixed(1)}, Tukey group {currentGroup}. Wet-bead mass gain {currentSwelling.toFixed(1)}%. Solution drawn into beads about {currentWater} mL.
               </p>
             </div>
 
