@@ -162,7 +162,7 @@ export default function Poster() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink/20 py-4 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-taupe">
             <span>42 × 36 in landscape poster</span>
-            <span>PDF and PNG included</span>
+            <span>PDF, PNG, and all seven figures</span>
           </div>
         </Reveal>
 

@@ -22,10 +22,10 @@ const PAGES = [
 export default function StudyPages() {
   return (
     <section id="study-pages" aria-label="Materials and protocol pages" className="bg-cream text-ink">
-      <div className="container-x pb-16 lg:pb-24">
+      <div className="container-x py-14 sm:py-16 lg:py-20">
         <Reveal>
           <div className="border-b border-ink/20 pb-4">
-            <p className="kicker text-teal">How the study was run</p>
+            <p className="kicker text-teal">Materials and protocol</p>
           </div>
         </Reveal>
         <div className="mt-8 grid gap-5 md:grid-cols-2">

@@ -23,13 +23,13 @@ export default function Home() {
       <main id="main-content" className="w-full max-w-full overflow-x-clip">
         <Hero />
         <Problem />
+        <Poster />
+        <StudyPages />
         <Hypotheses />
         <CinematicResults />
         <DataTrack />
         <BigFinding />
         <Conclusion />
-        <Poster />
-        <StudyPages />
         <Gallery />
         <Trailer />
       </main>

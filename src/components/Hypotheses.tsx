@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { hypotheses, meta } from "@/lib/data";
 import Reveal from "./Reveal";
 
 export default function Hypotheses() {
   return (
-    <section id="hypotheses" aria-labelledby="hypotheses-heading" className="bg-paper text-ink">
+    <section id="hypotheses" aria-labelledby="hypotheses-heading" className="border-t border-ink/10 bg-paper text-ink">
       <div className="container-x py-14 sm:py-16 lg:py-20">
         <Reveal>
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
@@ -16,16 +15,6 @@ export default function Hypotheses() {
               <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-ink/70">
                 Activated carbon loading was set at 0, 10, or 20 wt% relative to alginate solids, and each loading was prepared uncoated and chitosan-coated. Every formulation was run in three replicate flasks alongside dye-only controls, giving 18 treatment flasks. Poster prepared for the {meta.venue}.
               </p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/materials" className="action-secondary">
-                  The four materials
-                  <span aria-hidden="true">&#8599;</span>
-                </Link>
-                <Link href="/protocol" className="action-secondary">
-                  The five-step protocol
-                  <span aria-hidden="true">&#8599;</span>
-                </Link>
-              </div>
             </div>
 
             <ol className="grid gap-4">
