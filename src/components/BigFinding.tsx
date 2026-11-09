@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { dyeRemoval, selectivity, waterAbsorbed } from "@/lib/data";
+import { dyeRemoval, massGain, waterAbsorbed } from "@/lib/data";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -60,7 +60,7 @@ export default function BigFinding() {
           Coated beads took up more water. Carbon loading drove dye capture.
         </h2>
         <p className="mt-8 max-w-[56ch] text-base leading-relaxed text-ink/65 sm:text-lg">
-          Both photographs below are from the experiment. The chitosan-coated beads were not recolored and are shown in their natural appearance. Removal and selectivity are means of n = 3. Water uptake is an approximate coating-group mean.
+          Both photographs below are from the experiment. The chitosan-coated beads were not recolored and are shown in their natural appearance. Removal and wet-mass gain are means of three flasks at 20% carbon. Volume drawn into the beads is a coating-group mean.
         </p>
       </div>
 
@@ -72,7 +72,7 @@ export default function BigFinding() {
           label="Uncoated carbon-alginate beads"
           statement="Higher dye removal at every carbon loading"
           removal={`${dyeRemoval.uncoated[2].toFixed(1)}%`}
-          selectivityValue={selectivity.uncoated[2].toFixed(2)}
+          selectivityValue={`${massGain.uncoated[2].toFixed(1)}%`}
           water={`about ${waterAbsorbed.uncoated} mL`}
           accent="text-teal-soft"
         />
@@ -82,9 +82,9 @@ export default function BigFinding() {
           image="/photos/img-9611.jpg"
           imageAlt="Actual chitosan-coated bead formulations labeled 0%, 10%, and 20% carbon"
           label="Chitosan-coated carbon-alginate beads"
-          statement="Greater swelling, lower removal at every loading"
+          statement="Greater mass gain, lower removal at 10% and 20% carbon"
           removal={`${dyeRemoval.coated[2].toFixed(1)}%`}
-          selectivityValue={selectivity.coated[2].toFixed(2)}
+          selectivityValue={`${massGain.coated[2].toFixed(1)}%`}
           water={`about ${waterAbsorbed.coated} mL`}
           accent="text-clay-soft"
         />
@@ -149,9 +149,9 @@ function FindingFrame({
       </div>
 
       <dl className="grid border-t border-cream/20 sm:grid-cols-3">
-        <Metric label="Mean dye removed, 20% carbon" value={removal} accent={accent} />
-        <Metric label="Mean selectivity, 20% carbon" value={selectivityValue} accent={accent} />
-        <Metric label="Approx. coating-group water uptake" value={water} accent={accent} />
+        <Metric label="Apparent dye removal, 20% carbon" value={removal} accent={accent} />
+        <Metric label="Wet-bead mass gain, 20% carbon" value={selectivityValue} accent={accent} />
+        <Metric label="Solution drawn into beads" value={water} accent={accent} />
       </dl>
     </article>
   );

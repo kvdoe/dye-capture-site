@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { conclusion, futureWork } from "@/lib/data";
+import { conclusion, discussion, futureWork, limitations } from "@/lib/data";
 import BeforeAfter from "./BeforeAfter";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -55,6 +55,14 @@ export default function Conclusion() {
             <h2 className="mt-5 max-w-[14ch] text-[clamp(2.3rem,4vw,4.6rem)] font-medium leading-[0.94] tracking-[-0.05em]">
               What the data supports.
             </h2>
+            <div className="mt-6 border-t border-ink/20 pt-5">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-ink/50">Discussion</p>
+              {discussion.map((paragraph) => (
+                <p key={paragraph} className="conclusion-line mt-3 text-sm leading-relaxed text-ink/70">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
             <div className="mt-8 border-t border-ink/20">
               {conclusion.map((paragraph) => (
                 <p key={paragraph} className="conclusion-line border-b border-ink/20 py-5 text-sm leading-relaxed text-ink/75 sm:text-base">
@@ -74,6 +82,18 @@ export default function Conclusion() {
               afterLabel="Treated (uncoated beads)"
             />
           </figure>
+        </div>
+
+        <div className="conclusion-next mt-14 border-t border-ink/20 pt-10">
+          <p className="font-mono text-xs uppercase tracking-[0.17em] text-clay">Limitations</p>
+          <ul className="mt-5 grid gap-3 border-t border-ink/20 pt-5 sm:grid-cols-2">
+            {limitations.map((item) => (
+              <li key={item} className="grid grid-cols-[14px_1fr] gap-3 border-b border-ink/15 pb-3 text-sm leading-relaxed text-ink/70">
+                <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 rounded-full bg-clay" />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="conclusion-next mt-14 border-t border-ink/20 pt-10">

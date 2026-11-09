@@ -19,8 +19,8 @@ export default function NotFound() {
             Page not found.
           </h1>
           <p className="mt-7 max-w-[56ch] text-base leading-relaxed text-ink/75 sm:text-lg">
-            This project is a single-page research record. The address may be
-            incorrect, or the page may have moved.
+            The address may be incorrect, or the page may have moved. The study,
+            materials, and protocol pages are linked below.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">

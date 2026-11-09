@@ -6,12 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { figures, meta } from "@/lib/data";
 import Reveal from "./Reveal";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Poster() {
   const [open, setOpen] = useState(false);
+  const [figureIndex, setFigureIndex] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -57,6 +59,19 @@ export default function Poster() {
     },
     { scope: sectionRef },
   );
+
+  useEffect(() => {
+    if (figureIndex === null) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFigureIndex(null);
+    };
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [figureIndex]);
 
   useEffect(() => {
     if (!open) return;
@@ -107,7 +122,7 @@ export default function Poster() {
             </h2>
             <div className="lg:justify-self-end">
               <p className="max-w-[54ch] text-lg leading-relaxed text-ink/75">
-                The poster contains the full rationale, method, charts, calculation table, conclusion, and references used for the research presentation.
+                The 42 by 36 inch poster prepared for the {meta.venue}: background, methods, statistics, seven figures, discussion, conclusions, and references.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <a href="/poster.pdf" download className="action-primary">
@@ -135,8 +150,8 @@ export default function Poster() {
               <Image
                 src="/poster.png"
                 alt="Research poster showing the dye-capture study, method, results, charts, and conclusion"
-                width={2600}
-                height={2080}
+                width={3024}
+                height={2592}
                 className="w-full object-contain transition-transform duration-500 group-hover:scale-[1.008] group-focus-visible:scale-[1.008]"
                 sizes="(max-width:1380px) 100vw, 1320px"
               />
@@ -146,13 +161,125 @@ export default function Poster() {
             </button>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink/20 py-4 font-mono text-[0.62rem] uppercase tracking-[0.12em] text-taupe">
-            <span>Landscape poster</span>
+            <span>42 × 36 in landscape poster</span>
             <span>PDF and PNG included</span>
           </div>
+        </Reveal>
+
+        <Reveal delay={0.04}>
+          <div className="mt-14 border-b border-ink/20 pb-4">
+            <p className="kicker text-teal">Poster figures</p>
+          </div>
+          <p className="mt-6 max-w-[64ch] text-base leading-relaxed text-ink/70">
+            The seven figures from the poster at full size. Tap one to read its caption; every file is also a download.
+          </p>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {figures.map((figure, index) => (
+              <li key={figure.file} className={`border border-ink/15 bg-white ${index === 0 ? "sm:col-span-2 lg:col-span-3" : ""}`}>
+                <button
+                  type="button"
+                  onClick={() => setFigureIndex(index)}
+                  className="group block w-full text-left"
+                  aria-label={`Enlarge figure ${figure.n}: ${figure.title}`}
+                >
+                  <div className="relative w-full overflow-hidden bg-white" style={{ aspectRatio: `${figure.width} / ${figure.height}` }}>
+                    <Image
+                      src={`/figures/${figure.file}`}
+                      alt={`Figure ${figure.n}: ${figure.title}`}
+                      fill
+                      className="object-contain p-2 transition-transform duration-500 group-hover:scale-[1.01]"
+                      sizes={index === 0 ? "(max-width: 1380px) 100vw, 1320px" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 440px"}
+                    />
+                  </div>
+                  <div className="flex items-baseline justify-between gap-3 border-t border-ink/10 px-4 py-3">
+                    <p className="text-sm font-semibold text-ink">
+                      <span className="font-mono text-xs text-teal">Fig. {figure.n}</span> · {figure.title}
+                    </p>
+                    <span className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-taupe">Enlarge</span>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </div>
 
       <AnimatePresence>
+        {figureIndex !== null && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Figure ${figures[figureIndex].n}: ${figures[figureIndex].title}`}
+            className="fixed inset-0 z-[80] overflow-auto bg-ink/95 p-4 backdrop-blur-md sm:p-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setFigureIndex(null)}
+          >
+            <div className="fixed right-5 top-5 z-10 flex gap-2">
+              <a
+                href={`/figures/${figures[figureIndex].file}`}
+                download
+                className="hidden min-h-11 items-center border border-cream/25 px-4 text-sm font-semibold text-cream hover:bg-cream hover:text-ink sm:inline-flex"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Download PNG
+              </a>
+              <button
+                type="button"
+                onClick={() => setFigureIndex(null)}
+                className="flex h-11 w-11 items-center justify-center border border-cream/25 text-cream hover:bg-cream hover:text-ink"
+                aria-label="Close figure"
+                autoFocus
+              >
+                <span aria-hidden="true" className="text-2xl">&#215;</span>
+              </button>
+            </div>
+            <motion.figure
+              className="mx-auto mt-14 max-w-[1300px] bg-white p-3 shadow-2xl sm:p-5"
+              initial={{ opacity: 0, scale: 0.97, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.28 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <Image
+                src={`/figures/${figures[figureIndex].file}`}
+                alt={`Figure ${figures[figureIndex].n}: ${figures[figureIndex].title}`}
+                width={figures[figureIndex].width}
+                height={figures[figureIndex].height}
+                className="h-auto w-full"
+                sizes="95vw"
+                priority
+              />
+              <figcaption className="mt-4 border-t border-ink/15 pt-4 text-sm leading-relaxed text-ink/80">
+                <span className="font-semibold text-ink">Fig. {figures[figureIndex].n}. </span>
+                {figures[figureIndex].caption}
+              </figcaption>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFigureIndex((figureIndex + figures.length - 1) % figures.length)}
+                    className="min-h-10 border border-ink/25 px-4 text-sm font-semibold text-ink hover:bg-ink hover:text-cream"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFigureIndex((figureIndex + 1) % figures.length)}
+                    className="min-h-10 border border-ink/25 px-4 text-sm font-semibold text-ink hover:bg-ink hover:text-cream"
+                  >
+                    Next
+                  </button>
+                </div>
+                <a href={`/figures/${figures[figureIndex].file}`} download className="text-link text-sm font-semibold text-ink sm:hidden">
+                  Download PNG
+                </a>
+              </div>
+            </motion.figure>
+          </motion.div>
+        )}
         {open && (
           <motion.div
             ref={dialogRef}
@@ -193,7 +320,7 @@ export default function Poster() {
               transition={{ duration: 0.32 }}
               onClick={(event) => event.stopPropagation()}
             >
-              <Image src="/poster.png" alt="Research poster enlarged" width={2600} height={2080} className="h-auto w-full" sizes="95vw" priority />
+              <Image src="/poster.png" alt="Research poster enlarged" width={3024} height={2592} className="h-auto w-full" sizes="95vw" priority />
             </motion.div>
           </motion.div>
         )}

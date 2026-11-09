@@ -74,6 +74,7 @@ export default function DyeFlowCanvas({ className = "" }: DyeFlowCanvasProps) {
     let previousTime = 0;
     let running = false;
     let inView = true;
+    let useGlow = true;
 
     const resetParticle = (particle: PigmentParticle, spread = false) => {
       particle.x = spread
@@ -97,13 +98,15 @@ export default function DyeFlowCanvas({ className = "" }: DyeFlowCanvasProps) {
       const bounds = canvas.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.6);
+      const coarse = window.matchMedia("(pointer: coarse)").matches || width < 768;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.6);
+      useGlow = !coarse;
 
       canvas.width = Math.round(width * pixelRatio);
       canvas.height = Math.round(height * pixelRatio);
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-      const particleCount = width < 640 ? 52 : width < 1100 ? 76 : 104;
+      const particleCount = width < 640 ? 34 : width < 1100 ? 60 : 96;
       while (particles.length < particleCount) particles.push(createParticle());
       particles.length = particleCount;
       particles.forEach((particle) => resetParticle(particle, true));
@@ -171,10 +174,14 @@ export default function DyeFlowCanvas({ className = "" }: DyeFlowCanvasProps) {
           if (index === 0) context.moveTo(point.x, point.y);
           else context.lineTo(point.x, point.y);
         });
-        context.strokeStyle = `hsla(${particle.hue}, 92%, 67%, ${opacity})`;
-        context.lineWidth = particle.width;
-        context.shadowColor = `hsla(${particle.hue}, 94%, 62%, ${opacity})`;
-        context.shadowBlur = particle.width * 5;
+        context.strokeStyle = `hsla(${particle.hue}, 92%, 67%, ${useGlow ? opacity : opacity * 1.35})`;
+        context.lineWidth = useGlow ? particle.width : particle.width * 1.4;
+        if (useGlow) {
+          context.shadowColor = `hsla(${particle.hue}, 94%, 62%, ${opacity})`;
+          context.shadowBlur = particle.width * 5;
+        } else {
+          context.shadowBlur = 0;
+        }
         context.stroke();
       });
 

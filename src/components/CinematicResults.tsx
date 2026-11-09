@@ -5,13 +5,20 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
+  anova,
   carbonLevels,
+  coatingPenalty,
+  coatingPenaltyP,
+  coatingPenaltySignificant,
   dyeRemoval,
+  dyeRemovalSd,
   findingPoints,
-  selectivity,
-  swelling,
+  massGain,
+  massGainSd,
+  tukeyGroups,
   waterAbsorbed,
 } from "@/lib/data";
+import { useInView } from "@/hooks/useInView";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -37,7 +44,7 @@ const beadRandom = (() => {
   };
 })();
 
-const beadSpecs = Array.from({ length: 34 }, () => ({
+const beadSpecs = Array.from({ length: 26 }, () => ({
   left: 3 + beadRandom() * 90,
   bottom: 2 + beadRandom() * 66,
   size: 9 + Math.floor(beadRandom() * 16),
@@ -71,8 +78,8 @@ function formatRemoval(value: number) {
   return `${value.toFixed(1)}%`;
 }
 
-function formatSelectivity(value: number) {
-  return value.toFixed(2);
+function formatPenalty(value: number) {
+  return `${value.toFixed(1)} pts`;
 }
 
 function beadVisual(carbon: number) {
@@ -146,7 +153,7 @@ export default function CinematicResults() {
   const activeDotRef = useRef<SVGCircleElement>(null);
   const removalNumberRef = useRef<HTMLSpanElement>(null);
   const swellingNumberRef = useRef<HTMLSpanElement>(null);
-  const selectivityNumberRef = useRef<HTMLSpanElement>(null);
+  const penaltyNumberRef = useRef<HTMLSpanElement>(null);
   const waterNumberRef = useRef<HTMLSpanElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const motionProgressRef = useRef({ value: 0 });
@@ -154,10 +161,11 @@ export default function CinematicResults() {
   const activeIndexRef = useRef(0);
   const previousMetricsRef = useRef({
     removal: dyeRemoval.uncoated[0],
-    swelling: swelling.uncoated[0],
-    selectivity: selectivity.uncoated[0],
+    swelling: massGain.uncoated[0],
+    penalty: coatingPenalty[0],
     water: waterAbsorbed.uncoated,
   });
+  const { ref: viewRef, inView } = useInView<HTMLDivElement>("10% 0px");
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [coating, setCoating] = useState<CoatingMode>("uncoated");
@@ -165,8 +173,13 @@ export default function CinematicResults() {
 
   const activeCarbon = carbonLevels[activeIndex];
   const currentRemoval = dyeRemoval[coating][activeIndex];
-  const currentSwelling = swelling[coating][activeIndex];
-  const currentSelectivity = selectivity[coating][activeIndex];
+  const currentSwelling = massGain[coating][activeIndex];
+  const currentRemovalSd = dyeRemovalSd[coating][activeIndex];
+  const currentSwellingSd = massGainSd[coating][activeIndex];
+  const currentPenalty = coatingPenalty[activeIndex];
+  const currentPenaltyP = coatingPenaltyP[activeIndex];
+  const currentPenaltySignificant = coatingPenaltySignificant[activeIndex];
+  const currentGroup = tukeyGroups[coating][activeIndex];
   const currentWater = waterAbsorbed[coating];
   const currentBeadVisual = beadVisual(activeCarbon);
 
@@ -292,7 +305,7 @@ export default function CinematicResults() {
       const next = {
         removal: currentRemoval,
         swelling: currentSwelling,
-        selectivity: currentSelectivity,
+        penalty: currentPenalty,
         water: currentWater,
       };
 
@@ -314,11 +327,11 @@ export default function CinematicResults() {
           reducedMotion,
         ),
         metricTween(
-          selectivityNumberRef.current,
-          previous.selectivity,
-          next.selectivity,
-          2,
-          "",
+          penaltyNumberRef.current,
+          previous.penalty,
+          next.penalty,
+          1,
+          " pts",
           reducedMotion,
         ),
         metricTween(
@@ -358,7 +371,7 @@ export default function CinematicResults() {
         activeIndex,
         currentRemoval,
         currentSwelling,
-        currentSelectivity,
+        currentPenalty,
         currentWater,
       ],
     },
@@ -456,6 +469,7 @@ export default function CinematicResults() {
         ref={stageRef}
         className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-[#05070f]"
       >
+        <div ref={viewRef} aria-hidden="true" className="pointer-events-none absolute inset-0" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-90"
@@ -480,7 +494,7 @@ export default function CinematicResults() {
           <header className="grid gap-6 border-b border-white/15 pb-6 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.58fr)] lg:items-end lg:gap-12">
             <div>
               <p className="font-mono text-[0.66rem] uppercase tracking-[0.22em] text-[#60a5fa]">
-                Mean results, n = 3
+                Interactive results, mean ± SD, n = 3 flasks per formulation
               </p>
               <h2
                 id="cinematic-results-heading"
@@ -490,14 +504,14 @@ export default function CinematicResults() {
               </h2>
             </div>
             <p className="max-w-[62ch] text-sm leading-relaxed text-[#f4f7ff]/68 sm:text-base lg:pb-1">
-              {findingPoints[0].body} Removal, swelling, and selectivity are mean values from three replicates per formulation.
+              {findingPoints[0].body}
             </p>
           </header>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="click-cue text-[#60a5fa]">Click here</span>
+            <span className="click-cue text-[#60a5fa]">Try it</span>
             <p className="text-xs text-[#f4f7ff]/65 sm:text-sm">
-              These are buttons — click a carbon loading and a coating below to change the chamber, chart, and numbers.
+              Tap a carbon loading and a coating below to change the chamber, chart, and numbers.
             </p>
           </div>
 
@@ -589,19 +603,26 @@ export default function CinematicResults() {
                       "linear-gradient(180deg, rgba(20, 220, 210, 0.55) 0%, rgba(6, 224, 205, 0.82) 100%)",
                   }}
                 >
-                  <div aria-hidden="true" className="absolute -top-9 left-0 h-16 w-[200%]" style={{ animation: "wave-slide 6s linear infinite" }}>
+                  <div aria-hidden="true" className="absolute -top-9 left-0 h-16 w-[200%]" style={{ animation: "wave-slide 6s linear infinite", animationPlayState: inView ? "running" : "paused" }}>
                     <svg className="h-full w-full" viewBox="0 0 2400 90" preserveAspectRatio="none">
                       <path d="M0 45 C 200 5 400 85 600 45 C 800 5 1000 85 1200 45 C 1400 5 1600 85 1800 45 C 2000 5 2200 85 2400 45 L 2400 90 L 0 90 Z" fill="rgba(96, 165, 250, 0.5)" />
                     </svg>
                   </div>
-                  <div aria-hidden="true" className="absolute -top-6 left-0 h-14 w-[200%]" style={{ animation: "wave-slide 3.8s linear infinite reverse" }}>
+                  <div aria-hidden="true" className="absolute -top-6 left-0 h-14 w-[200%]" style={{ animation: "wave-slide 3.8s linear infinite reverse", animationPlayState: inView ? "running" : "paused" }}>
                     <svg className="h-full w-full" viewBox="0 0 2400 90" preserveAspectRatio="none">
                       <path d="M0 50 C 150 90 450 10 600 50 C 750 90 1050 10 1200 50 C 1350 90 1650 10 1800 50 C 1950 90 2250 10 2400 50 L 2400 90 L 0 90 Z" fill="rgba(37, 99, 235, 0.45)" />
                     </svg>
                   </div>
-                  <div aria-hidden="true" className="absolute left-1/2 top-1/2 h-[190%] w-[190%] rounded-full" style={{ background: "conic-gradient(from 0deg, rgba(147,197,253,0) 0%, rgba(147,197,253,0.42) 12%, rgba(29,78,216,0) 30%, rgba(191,219,254,0.34) 52%, rgba(29,78,216,0) 72%, rgba(147,197,253,0.4) 88%, rgba(147,197,253,0) 100%)", animation: "swirl-spin 4s linear infinite", filter: "blur(5px)" }} />
-                  <div aria-hidden="true" className="absolute left-1/2 top-[58%] h-[120%] w-[120%] rounded-full" style={{ background: "conic-gradient(from 180deg, rgba(191,219,254,0) 0%, rgba(96,165,250,0.34) 20%, rgba(29,78,216,0) 46%, rgba(147,197,253,0.3) 68%, rgba(29,78,216,0) 92%, rgba(191,219,254,0) 100%)", animation: "swirl-spin 6.5s linear infinite reverse", filter: "blur(7px)" }} />
-
+                  <div
+                    aria-hidden="true"
+                    className="absolute left-1/2 top-1/2 h-[170%] w-[170%] rounded-full opacity-70"
+                    style={{
+                      background:
+                        "conic-gradient(from 0deg, rgba(147,197,253,0) 0%, rgba(147,197,253,0.3) 12%, rgba(29,78,216,0) 30%, rgba(191,219,254,0.24) 52%, rgba(29,78,216,0) 72%, rgba(147,197,253,0.28) 88%, rgba(147,197,253,0) 100%)",
+                      animation: "swirl-spin 7s linear infinite",
+                      animationPlayState: inView ? "running" : "paused",
+                    }}
+                  />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_46%_38%,rgba(255,255,255,0.2),transparent_29%),linear-gradient(105deg,transparent_24%,rgba(255,255,255,0.1)_49%,transparent_72%)]" />
 
                   {beadSpecs.map((bead, index) => (
@@ -625,7 +646,7 @@ export default function CinematicResults() {
                     />
                   ))}
 
-                  {Array.from({ length: 16 }, (_, index) => (
+                  {Array.from({ length: 8 }, (_, index) => (
                     <span
                       key={index}
                       className="absolute rounded-full border border-white/30 bg-white/10"
@@ -635,6 +656,7 @@ export default function CinematicResults() {
                         width: 3 + (index % 4) * 2,
                         height: 3 + (index % 4) * 2,
                         animation: `bubble-rise ${4 + (index % 5) * 1.3}s linear ${(index * 0.7) % 6}s infinite`,
+                        animationPlayState: inView ? "running" : "paused",
                       }}
                     />
                   ))}
@@ -644,7 +666,7 @@ export default function CinematicResults() {
               <div className="absolute bottom-5 left-5 right-5 z-30 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-white/20 bg-[#05070f]/65 pt-4 backdrop-blur-md sm:grid-cols-4">
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Mean dye removed
+                    Apparent dye removal
                   </p>
                   <span
                     ref={removalNumberRef}
@@ -653,10 +675,13 @@ export default function CinematicResults() {
                   >
                     {formatRemoval(currentRemoval)}
                   </span>
+                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
+                    ± {currentRemovalSd.toFixed(1)} SD · Tukey group {currentGroup}
+                  </span>
                 </div>
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Mean bead swelling
+                    Wet-bead mass gain
                   </p>
                   <span
                     ref={swellingNumberRef}
@@ -665,22 +690,28 @@ export default function CinematicResults() {
                   >
                     {currentSwelling.toFixed(1)}%
                   </span>
-                </div>
-                <div data-metric-label>
-                  <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Mean selectivity
-                  </p>
-                  <span
-                    ref={selectivityNumberRef}
-                    aria-hidden="true"
-                    className="mt-1 block font-mono text-[clamp(1.45rem,3vw,2.35rem)] tabular-nums text-[#f4f7ff]"
-                  >
-                    {formatSelectivity(currentSelectivity)}
+                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
+                    ± {currentSwellingSd.toFixed(1)} SD, vs 4.00 g start
                   </span>
                 </div>
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Approx. coating-group uptake
+                    Lost to coating at {activeCarbon}% carbon
+                  </p>
+                  <span
+                    ref={penaltyNumberRef}
+                    aria-hidden="true"
+                    className="mt-1 block font-mono text-[clamp(1.45rem,3vw,2.35rem)] tabular-nums text-[#f4f7ff]"
+                  >
+                    {formatPenalty(currentPenalty)}
+                  </span>
+                  <span aria-hidden="true" className={`block font-mono text-[0.62rem] ${currentPenaltySignificant ? "text-[#93c5fd]" : "text-white/55"}`}>
+                    {currentPenaltySignificant ? "significant, " : "not significant, "}{currentPenaltyP}
+                  </span>
+                </div>
+                <div data-metric-label>
+                  <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
+                    Solution drawn into beads
                   </p>
                   <span aria-hidden="true" className="mt-1 block font-mono text-[clamp(1.2rem,2.3vw,1.95rem)] leading-tight tabular-nums text-[#f4f7ff]">
                     <span className="block text-[0.5em] uppercase tracking-[0.1em] text-white/55">about</span>
@@ -688,11 +719,14 @@ export default function CinematicResults() {
                       {currentWater} mL
                     </span>
                   </span>
+                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
+                    of 40.0 mL, coating-group mean
+                  </span>
                 </div>
               </div>
 
               <p className="sr-only" aria-live="polite">
-                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Mean dye removed {formatRemoval(currentRemoval)}. Mean bead swelling {currentSwelling.toFixed(1)}%. Mean selectivity {formatSelectivity(currentSelectivity)}. Approximate coating-group water uptake about {currentWater} mL.
+                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Apparent dye removal {formatRemoval(currentRemoval)} plus or minus {currentRemovalSd.toFixed(1)}, Tukey group {currentGroup}. Wet-bead mass gain {currentSwelling.toFixed(1)}%. Reduction attributable to coating at this loading {formatPenalty(currentPenalty)}, {currentPenaltyP}. Solution drawn into beads about {currentWater} mL.
               </p>
             </div>
 
@@ -701,7 +735,7 @@ export default function CinematicResults() {
                 <div className="flex items-end justify-between gap-6">
                   <div>
                     <p className="font-mono text-[0.61rem] uppercase tracking-[0.18em] text-white/45">
-                      Mean dye removal by carbon loading
+                      Apparent dye removal by carbon loading
                     </p>
                     <h3 className="mt-2 text-2xl tracking-[-0.035em] text-[#f4f7ff]">
                       Both conditions, measured side by side.
@@ -723,7 +757,7 @@ export default function CinematicResults() {
                     Dye removal by carbon loading and coating condition
                   </title>
                   <desc id="removal-graph-description">
-                    Mean of three replicates. Uncoated values are 16.6%, 44.5%, and 84.0%. Chitosan-coated values are 13.9%, 19.5%, and 40.7% at 0%, 10%, and 20% carbon.
+                    Mean of three flasks. Uncoated values are 16.6%, 44.5%, and 84.0%. Chitosan-coated values are 13.8%, 19.5%, and 40.6% at 0%, 10%, and 20% carbon.
                   </desc>
 
                   {chartX.map((x, index) => (
@@ -866,21 +900,21 @@ export default function CinematicResults() {
                       </span>
                       <span className="font-mono text-sm tabular-nums">
                         <span className="block text-[0.52rem] uppercase tracking-[0.12em] text-white/36">
-                          Mean removed
+                          Removed
                         </span>
                         {formatRemoval(dyeRemoval[mode][activeIndex])}
                       </span>
                       <span className="font-mono text-sm tabular-nums">
                         <span className="block text-[0.52rem] uppercase tracking-[0.12em] text-white/36">
-                          Mean swelling
+                          Mass gain
                         </span>
-                        {swelling[mode][activeIndex].toFixed(1)}%
+                        {massGain[mode][activeIndex].toFixed(1)}%
                       </span>
                       <span className="font-mono text-sm tabular-nums">
                         <span className="block text-[0.52rem] uppercase tracking-[0.12em] text-white/36">
-                          Mean selectivity
+                          Tukey group
                         </span>
-                        {formatSelectivity(selectivity[mode][activeIndex])}
+                        {tukeyGroups[mode][activeIndex]}
                       </span>
                     </button>
                   );
@@ -900,64 +934,44 @@ export default function CinematicResults() {
           <div className="border-y border-white/20">
             <div className="py-6">
               <h3 className="text-2xl text-[#f4f7ff] sm:text-3xl">
-                Mean results for all six formulations
+                Results for all six formulations
               </h3>
-              <p className="mt-2 text-sm text-[#f4f7ff]/55">
-                Removal, swelling, and selectivity are means of n = 3. Water uptake is an approximate coating-group mean. The animated chamber is a visual explanation.
+              <p className="mt-2 max-w-[80ch] text-sm text-[#f4f7ff]/55">
+                Apparent dye removal and wet-bead mass gain are mean ± SD of three flasks. Formulations sharing a Tukey letter are not significantly different (α = 0.05). Solution-volume decrease is a coating-group mean read to the nearest mL. The animated chamber is a visual explanation, not a measurement.
               </p>
             </div>
 
             <div className="overflow-x-auto border-t border-white/20 pb-8 pt-3">
-              <table className="w-full min-w-[760px] text-left text-sm">
+              <table className="w-full min-w-[720px] text-left text-sm">
                 <caption className="sr-only">
-                  Mean dye removal, bead swelling, and selectivity for each carbon loading and coating condition, with approximate coating-group water uptake
+                  Apparent dye removal, wet-bead mass gain, Tukey group, and solution-volume decrease for each carbon loading and coating condition
                 </caption>
                 <thead>
                   <tr className="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-white/45">
-                    <th scope="col" className="px-4 py-3 font-medium">
-                      Carbon
-                    </th>
-                    <th scope="col" className="px-4 py-3 font-medium">
-                      Condition
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-right font-medium">
-                      Mean dye removed
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-right font-medium">
-                      Mean bead swelling
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-right font-medium">
-                      Mean selectivity
-                    </th>
-                    <th scope="col" className="px-4 py-3 text-right font-medium">
-                      Approx. group uptake
-                    </th>
+                    <th scope="col" className="px-4 py-3 font-medium">Carbon</th>
+                    <th scope="col" className="px-4 py-3 font-medium">Condition</th>
+                    <th scope="col" className="px-4 py-3 text-right font-medium">Dye removal</th>
+                    <th scope="col" className="px-4 py-3 text-right font-medium">Mass gain</th>
+                    <th scope="col" className="px-4 py-3 text-right font-medium">Tukey group</th>
+                    <th scope="col" className="px-4 py-3 text-right font-medium">Volume drawn in</th>
                   </tr>
                 </thead>
                 <tbody>
                   {carbonLevels.flatMap((level, levelIndex) =>
                     coatingOptions.map((option) => (
-                      <tr
-                        key={`${level}-${option.value}`}
-                        className="border-t border-white/15 text-[#f4f7ff]/82"
-                      >
-                        <th
-                          scope="row"
-                          className="px-4 py-3 font-mono font-semibold tabular-nums text-[#f4f7ff]"
-                        >
+                      <tr key={`${level}-${option.value}`} className="border-t border-white/15 text-[#f4f7ff]/82">
+                        <th scope="row" className="px-4 py-3 font-mono font-semibold tabular-nums text-[#f4f7ff]">
                           {level}%
                         </th>
                         <td className="px-4 py-3">{option.label}</td>
                         <td className="px-4 py-3 text-right font-mono tabular-nums">
-                          {formatRemoval(dyeRemoval[option.value][levelIndex])}
+                          {formatRemoval(dyeRemoval[option.value][levelIndex])} ± {dyeRemovalSd[option.value][levelIndex].toFixed(1)}
                         </td>
                         <td className="px-4 py-3 text-right font-mono tabular-nums">
-                          {swelling[option.value][levelIndex].toFixed(1)}%
+                          {massGain[option.value][levelIndex].toFixed(1)}% ± {massGainSd[option.value][levelIndex].toFixed(1)}
                         </td>
                         <td className="px-4 py-3 text-right font-mono tabular-nums">
-                          {formatSelectivity(
-                            selectivity[option.value][levelIndex],
-                          )}
+                          {tukeyGroups[option.value][levelIndex]}
                         </td>
                         <td className="px-4 py-3 text-right font-mono tabular-nums">
                           about {waterAbsorbed[option.value]} mL
@@ -967,6 +981,66 @@ export default function CinematicResults() {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="border border-white/20 p-6">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#60a5fa]">Statistical summary</p>
+              <h3 className="mt-3 text-xl text-[#f4f7ff] sm:text-2xl">Two-way ANOVA on the {anova.flasks} treatment flasks</h3>
+              <dl className="mt-5 grid gap-3 font-mono text-sm text-[#f4f7ff]/80 sm:grid-cols-2">
+                <div className="border-t border-white/15 pt-3">
+                  <dt className="text-[0.6rem] uppercase tracking-[0.12em] text-white/45">Carbon loading</dt>
+                  <dd className="mt-1 tabular-nums">F({anova.carbon.df}) = {anova.carbon.F}, {anova.carbon.p}</dd>
+                </div>
+                <div className="border-t border-white/15 pt-3">
+                  <dt className="text-[0.6rem] uppercase tracking-[0.12em] text-white/45">Chitosan coating</dt>
+                  <dd className="mt-1 tabular-nums">F({anova.coating.df}) = {anova.coating.F}, {anova.coating.p}</dd>
+                </div>
+                <div className="border-t border-white/15 pt-3">
+                  <dt className="text-[0.6rem] uppercase tracking-[0.12em] text-white/45">Carbon × coating interaction</dt>
+                  <dd className="mt-1 tabular-nums">F({anova.interaction.df}) = {anova.interaction.F}, {anova.interaction.p}</dd>
+                </div>
+                <div className="border-t border-white/15 pt-3">
+                  <dt className="text-[0.6rem] uppercase tracking-[0.12em] text-white/45">Model fit</dt>
+                  <dd className="mt-1 tabular-nums">R² = {anova.r2.toFixed(2)}, {anova.residualDf} residual df</dd>
+                </div>
+              </dl>
+              <p className="mt-5 border-t border-white/15 pt-4 text-sm text-[#f4f7ff]/65">
+                Tukey HSD: {anova.tukey.map((t) => `${t.pair}, ${t.p}`).join("; ")}. Wet-mass-gain interaction {anova.massGainInteraction}.
+              </p>
+              <p className="mt-3 text-xs text-[#f4f7ff]/45">
+                Assumption checks (Levene {anova.supplemental.levene}; Shapiro-Wilk {anova.supplemental.shapiro}; pooled SD {anova.supplemental.pooledSd}) have limited power with three flasks per formulation: large p-values mean no violation was detected, not that the assumptions were proven.
+              </p>
+            </div>
+
+            <div className="border border-white/20 p-6">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#60a5fa]">Reduction attributable to coating</p>
+              <h3 className="mt-3 text-xl text-[#f4f7ff] sm:text-2xl">Uncoated minus coated at each loading</h3>
+              <ul className="mt-5 divide-y divide-white/15 border-t border-white/15 font-mono text-sm">
+                {carbonLevels.map((level, index) => (
+                  <li key={level} className="flex items-baseline justify-between gap-4 py-3">
+                    <span className="text-white/60">{level}% carbon</span>
+                    <span className="tabular-nums text-[#f4f7ff]">
+                      {formatPenalty(coatingPenalty[index])}
+                      <span className={`ml-3 text-xs ${coatingPenaltySignificant[index] ? "text-[#93c5fd]" : "text-white/45"}`}>
+                        {coatingPenaltyP[index]}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs text-[#f4f7ff]/45">
+                95% confidence intervals from the pooled ANOVA error are ± 6.3 percentage points. P-values are Holm-adjusted across the three comparisons.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href="/dye-capture-results.csv" download className="inline-flex min-h-10 items-center border border-white/30 px-4 text-xs font-semibold text-[#f4f7ff] hover:bg-white hover:text-[#05070f]">
+                  Download formulation means (CSV)
+                </a>
+                <a href="/dye-capture-vials.csv" download className="inline-flex min-h-10 items-center border border-white/30 px-4 text-xs font-semibold text-[#f4f7ff] hover:bg-white hover:text-[#05070f]">
+                  Download per-flask data (CSV)
+                </a>
+              </div>
             </div>
           </div>
         </div>

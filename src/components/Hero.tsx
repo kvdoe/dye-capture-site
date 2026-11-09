@@ -299,12 +299,12 @@ export default function Hero() {
         <div
           aria-hidden="true"
           data-pigment-layer
-          className="absolute -right-[12vw] top-[18%] h-[36vw] min-h-64 w-[44vw] min-w-80 rounded-full bg-blue-400/20 blur-[90px] mix-blend-screen will-change-transform"
+          className="absolute -right-[12vw] top-[18%] hidden h-[36vw] min-h-64 w-[44vw] min-w-80 rounded-full bg-blue-400/20 blur-[90px] mix-blend-screen will-change-transform md:block"
         />
         <div
           aria-hidden="true"
           data-pigment-layer
-          className="absolute -bottom-[14vw] left-[14%] h-[38vw] min-h-72 w-[52vw] min-w-96 rounded-full bg-[#1d4ed8]/25 blur-[110px] mix-blend-screen will-change-transform"
+          className="absolute -bottom-[14vw] left-[14%] hidden h-[38vw] min-h-72 w-[52vw] min-w-96 rounded-full bg-[#1d4ed8]/25 blur-[110px] mix-blend-screen will-change-transform md:block"
         />
 
         <div

@@ -15,7 +15,7 @@ export default function Team() {
               Researchers, mentors, and sources.
             </h2>
             <p className="max-w-[52ch] text-lg leading-relaxed text-cream/70 lg:justify-self-end">
-              This project was completed through the UT High School Research Academy Sustainable Fashion Materials program.
+              This research was conducted at {meta.org}, {meta.program}, and prepared as a poster for the {meta.venue}.
             </p>
           </div>
         </Reveal>
@@ -52,8 +52,10 @@ export default function Team() {
 
             <Reveal delay={0.06}>
               <div className="mt-12">
-                <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-clay-soft">Mentors</h3>
+                <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-clay-soft">Mentors and co-authors</h3>
                 <p className="mt-5 text-base leading-relaxed text-cream/75">{meta.mentors.join(" · ")}</p>
+                <p className="mt-6 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-cream/45">Poster authors, in order</p>
+                <p className="mt-2 text-sm leading-relaxed text-cream/65">{meta.authors.join(", ")}</p>
               </div>
             </Reveal>
           </div>
@@ -95,6 +97,7 @@ export default function Team() {
           </div>
           <div className="flex gap-5 text-sm font-semibold">
             <a href="/poster.pdf" className="text-link">Poster PDF</a>
+            <a href="/dye-capture-results.csv" className="text-link">Data CSV</a>
             <a href="#top" className="text-link">Back to top <span aria-hidden="true">&#8593;</span></a>
           </div>
         </div>

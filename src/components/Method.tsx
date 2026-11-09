@@ -11,7 +11,7 @@ import { photoSrc } from "@/lib/photos";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const methodIntroduction =
-  "Three carbon loadings were tested with and without a chitosan coating. Each condition had three replicates and a 24-hour contact period.";
+  "Three carbon loadings (0, 10, 20 wt% relative to alginate solids) were tested with and without a chitosan coating. Each formulation had three replicate flasks, a 24-hour contact period at 90 rpm, and a pH 4 dye solution.";
 
 const analysisCopy = (
   <>
@@ -19,7 +19,7 @@ const analysisCopy = (
     <span className="metric-mono whitespace-nowrap text-cream">
       A = -log<sub>10</sub>(I / 255)
     </span>
-    . Each treated vial was then compared with the dye-only control to calculate percent removal.
+    . Each treated flask was compared with the dye-only control to calculate apparent removal: removal (%) = [(A<sub>control</sub> − A<sub>sample</sub>) / A<sub>control</sub>] × 100. The assay is referenced to the control and was not calibrated to concentration, so results are apparent decolorization. Wet-bead mass gain (%) = [(final mass − 4.00 g) / 4.00 g] × 100. Two-way ANOVA tested carbon loading, coating, and their interaction across the 18 flasks; Tukey HSD compared all six formulations; coating contrasts used the pooled ANOVA error with Holm-adjusted p-values (α = 0.05).
   </>
 );
 
@@ -198,7 +198,7 @@ function DesktopFilm() {
         <div className="relative z-30 flex h-full w-[38%] min-w-[29rem] flex-col px-[clamp(2.5rem,4vw,5.5rem)] pb-6 pt-[clamp(4.5rem,7vh,6rem)]">
           <div>
             <h2 className="max-w-full text-[clamp(1.8rem,2.3vw,3rem)] leading-[0.95] text-cream">
-              Five steps. Six formulations. Eighteen vials.
+              Five steps. Six formulations. Eighteen flasks.
             </h2>
             <p className="mt-5 max-w-[44ch] text-[clamp(0.88rem,1.05vw,1.05rem)] leading-relaxed text-cream/70">
               {methodIntroduction}
@@ -260,7 +260,7 @@ function ReducedMotionDesktop() {
     <div className="protocol-reduced hidden bg-ink text-cream">
       <header className="container-x border-b border-cream/15 py-24">
         <h2 className="max-w-[16ch] text-[clamp(2.6rem,4.4vw,4.6rem)] leading-[0.94]">
-          Five steps. Six formulations. Eighteen vials.
+          Five steps. Six formulations. Eighteen flasks.
         </h2>
         <p className="mt-7 max-w-[58ch] text-lg leading-relaxed text-cream/68">{methodIntroduction}</p>
       </header>
@@ -318,7 +318,7 @@ function MobileScenes() {
               {index === 0 && (
                 <div className="absolute inset-x-0 top-0 z-10 px-5 pt-8 sm:px-8 sm:pt-12">
                   <h2 className="max-w-full text-[clamp(1.9rem,8vw,3.4rem)] leading-[0.94]">
-                    Five steps. Six formulations. Eighteen vials.
+                    Five steps. Six formulations. Eighteen flasks.
                   </h2>
                 </div>
               )}
@@ -362,7 +362,7 @@ export default function Method() {
 
       <div className="relative z-10 border-y border-cream/15 bg-ink text-cream">
         <div className="container-x grid gap-5 py-10 lg:grid-cols-[0.32fr_0.68fr] lg:items-center lg:py-14">
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-teal-soft">Image analysis</p>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-teal-soft">Image analysis and statistics</p>
           <p className="max-w-4xl text-sm leading-relaxed text-cream/68 sm:text-base">{analysisCopy}</p>
         </div>
       </div>

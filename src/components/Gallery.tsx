@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { GALLERY, photoSrc, type Photo } from "@/lib/photos";
 import Lightbox from "./Lightbox";
+import { useInView } from "@/hooks/useInView";
 
 const FEATURED_FILES = [
   "img-9218.jpg",
@@ -22,6 +23,7 @@ const FEATURED_FILES = [
 
 export default function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
+  const { ref, inView } = useInView<HTMLElement>("10% 0px");
 
   const photos = useMemo(
     () => FEATURED_FILES.map((file) => GALLERY.find((photo) => photo.file === file)).filter((photo): photo is Photo => Boolean(photo)),
@@ -34,7 +36,7 @@ export default function Gallery() {
   ];
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-ink py-20 text-cream lg:py-28">
+    <section ref={ref} id="gallery" className="relative overflow-hidden bg-ink py-20 text-cream lg:py-28">
       <div className="pointer-events-none absolute inset-0 water-gradient opacity-15" />
 
       <div className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-6 px-5 sm:px-8 lg:px-12">
@@ -50,8 +52,11 @@ export default function Gallery() {
         {rows.map((row) => (
           <div
             key={row.key}
-            className="gallery-marquee flex w-max items-stretch"
-            style={{ animationDirection: row.reverse ? "reverse" : "normal" }}
+            className={`gallery-marquee flex w-max items-stretch ${row.reverse ? "hidden sm:flex" : ""}`}
+            style={{
+              animationDirection: row.reverse ? "reverse" : "normal",
+              animationPlayState: inView ? "running" : "paused",
+            }}
           >
             {[0, 1].map((copy) => (
               <div key={copy} aria-hidden={copy === 1 ? "true" : undefined} className="flex items-stretch gap-3 pr-3">
@@ -63,7 +68,7 @@ export default function Gallery() {
                       type="button"
                       tabIndex={copy === 1 ? -1 : 0}
                       onClick={() => setIndex(photoIndex)}
-                      className="group relative h-[230px] w-[68vw] shrink-0 overflow-hidden border border-cream/20 text-left sm:h-[280px] sm:w-[400px]"
+                      className="group relative h-[210px] w-[68vw] shrink-0 overflow-hidden border border-cream/20 text-left sm:h-[280px] sm:w-[400px]"
                       aria-label={`Open photograph: ${photo.alt}`}
                     >
                       <Image

@@ -56,9 +56,13 @@ export default function Materials() {
   return (
     <section ref={sectionRef} id="materials" className="relative overflow-hidden bg-cream px-5 py-16 text-ink sm:px-8 lg:px-12 lg:py-24">
       <div className="mx-auto max-w-[1500px]">
-        <h2 className="max-w-[1450px] font-sans text-[clamp(2.3rem,4.6vw,4.8rem)] font-normal leading-[0.98] tracking-[-0.05em]">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-teal">Materials</p>
+        <h1 className="mt-5 max-w-[1450px] font-sans text-[clamp(2.3rem,4.6vw,4.8rem)] font-normal leading-[0.98] tracking-[-0.05em]">
           The materials used in this study.
-        </h2>
+        </h1>
+        <p className="mt-6 max-w-[64ch] text-base leading-relaxed text-ink/70">
+          Four materials, six formulations. Carbon loading is given as wt% of coconut-shell activated carbon relative to the alginate solids: 0.20 g and 0.40 g of carbon per 2.00 g of alginate for the 10% and 20% beads.
+        </p>
 
         <div className="mt-12 h-px w-full overflow-hidden bg-ink/15">
           <div className="material-flow-line h-full origin-left bg-teal" />
@@ -112,8 +116,8 @@ export default function Materials() {
 
         <div className="mt-8 flex items-center justify-between gap-6 text-sm text-ink/55">
           <p className="flex items-center gap-3">
-            <span className="click-cue text-teal">Click here</span>
-            Click or hover each material panel above to expand its role.
+            <span className="click-cue text-teal">Try it</span>
+            Tap or hover each material panel above to expand its role.
           </p>
           <p className="hidden font-mono text-xs md:block">Four materials, six formulations</p>
         </div>

@@ -97,8 +97,8 @@ export default function OpenGraphImage() {
               lineHeight: 1.42,
             }}
           >
-            Coconut-shell activated carbon sealed inside recoverable beads removed
-            up to 84% of Reactive Blue 140 from water.
+            Uncoated carbon-alginate beads at 20% carbon removed 84% of Reactive
+            Blue 140. A chitosan coating cut that to 41%.
           </div>
         </div>
 
@@ -111,7 +111,7 @@ export default function OpenGraphImage() {
             fontWeight: 600,
           }}
         >
-          <span>UT High School Research Academy</span>
+          <span>The University of Texas at Austin · College of Natural Sciences</span>
           <span
             style={{
               width: 42,

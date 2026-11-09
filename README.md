@@ -2,13 +2,13 @@
 
 An interactive research website for:
 
-> Capturing an Anionic Reactive Textile Dye with Coconut-Shell Carbon and Alginate Beads
+> The Effects of Carbon Loading and Chitosan Coating on Activated Carbon-Alginate Beads for Reactive Textile Dye Removal
 >
-> Effects of Carbon Loading and a Chitosan Coating
+> The University of Texas at Austin, College of Natural Sciences. Poster prepared for the 2026 AIChE Annual Student Conference.
 
 Live site: [dye-capture-site.vercel.app](https://dye-capture-site.vercel.app/)
 
-The site presents the experiment as a scroll-directed visual narrative. It combines one clearly labeled conceptual environmental image with original laboratory photography, a five-part pinned protocol, an interactive results chamber, complete mean-value tables, a natural-color coated and uncoated comparison, a moving photo archive, and the full research poster.
+The site presents the experiment as a scroll-directed visual narrative. The home page carries the context, hypotheses, interactive results chamber, statistics, conclusion, poster and figures, photo archive, and trailer. The four materials and the five-step protocol each have their own page (`/materials`, `/protocol`).
 
 Generated imagery is never used as experimental evidence. The bead, vial, procedure, and result photographs are the original project images and should not be recolored.
 
@@ -39,32 +39,36 @@ Edit [`src/lib/data.ts`](src/lib/data.ts).
 
 This file contains:
 
-- Research title, team, and mentors
-- Research question and context
+- Research title, authors, and mentors
+- Research question, context, and hypotheses
 - Material descriptions
 - Five protocol steps
-- Mean dye removal, swelling, selectivity, and ImageJ values
-- Conclusions, limitations, future work, and references
+- Apparent dye removal and wet-bead mass gain (mean and SD of three flasks), coating penalty, Tukey groups, and the two-way ANOVA summary
+- Discussion, conclusions, limitations, future work, references, and poster figure captions
 
-The removal, swelling, and selectivity values are formulation means from three replicates. Water uptake values are approximate group-level observations. Do not add error bars or uncertainty values unless the replicate-level measurements are available.
+All means and SDs come from the 18 per-flask values in `public/dye-capture-vials.csv`. Solution-volume decrease is a coating-group observation read to the nearest mL.
 
 ### Page sections
 
-The page order is controlled by [`src/app/page.tsx`](src/app/page.tsx).
+The home page order is controlled by [`src/app/page.tsx`](src/app/page.tsx). The materials and protocol pages are `src/app/materials/page.tsx` and `src/app/protocol/page.tsx`.
 
 The active visual sections are:
 
 - `src/components/Hero.tsx` and `src/components/DyeFlowCanvas.tsx`
 - `src/components/Problem.tsx`
-- `src/components/Materials.tsx`
-- `src/components/Method.tsx`
-- `src/components/CinematicResults.tsx`
+- `src/components/Hypotheses.tsx`
+- `src/components/CinematicResults.tsx` (interactive chamber, results table, statistics)
 - `src/components/DataTrack.tsx`
 - `src/components/BigFinding.tsx`
+- `src/components/Conclusion.tsx` (discussion, conclusion, limitations, next experiments)
+- `src/components/Poster.tsx` (poster plus the seven poster figures)
+- `src/components/StudyPages.tsx` (links to the materials and protocol pages)
 - `src/components/Gallery.tsx`
-- `src/components/Conclusion.tsx`
-- `src/components/Poster.tsx`
+- `src/components/Trailer.tsx`
 - `src/components/Team.tsx`
+- `src/components/Materials.tsx` and `src/components/Method.tsx` (own pages)
+
+Infinite animations (marquees, chamber water, canvas, video) pause when their section is off-screen via `src/hooks/useInView.ts`. The trailer video is `preload="none"` with a poster frame and only plays while visible.
 
 Most long-form motion uses GSAP ScrollTrigger. Controls and navigation use React state and Framer Motion where appropriate. Reduced-motion users receive readable normal-flow alternatives.
 
@@ -86,16 +90,17 @@ To add a real laboratory image, place it in `public/photos/`, then add its filen
 
 ### Research poster
 
-Replace both files when the poster changes:
+Replace these files when the poster changes:
 
-- `public/poster.png` for the on-page preview
+- `public/poster.png` for the on-page preview (3024 x 2592)
 - `public/poster.pdf` for the downloadable document
+- `public/figures/*.png` for the seven poster figures (captions live in `figures` in `src/lib/data.ts`)
 
 Keep the same filenames so no component changes are needed.
 
 ### Downloadable data
 
-The public CSV is [`public/dye-capture-results.csv`](public/dye-capture-results.csv). Update it whenever the values in `src/lib/data.ts` change. Preserve the distinction between measured formulation means and approximate group-level observations.
+Two public CSVs: [`public/dye-capture-results.csv`](public/dye-capture-results.csv) (formulation means and SDs) and [`public/dye-capture-vials.csv`](public/dye-capture-vials.csv) (the 18 per-flask values plus the control). Update both whenever the values in `src/lib/data.ts` change.
 
 ## Project stack
 

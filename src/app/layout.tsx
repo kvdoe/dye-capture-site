@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Dye Capture | Carbon-alginate bead research",
   description:
-    "A student research study testing recoverable carbon-alginate beads for removing Reactive Blue 140 from water.",
+    "A University of Texas at Austin study of how carbon loading and a chitosan coating affect reactive dye removal by activated carbon-alginate beads.",
   keywords: [
     "activated carbon",
     "alginate beads",
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
     "Reactive Blue 140",
     "adsorption",
   ],
-  authors: meta.team.map((name) => ({ name })),
+  authors: meta.authors.map((name) => ({ name })),
   creator: meta.team.join(", "),
   applicationName: "Dye Capture",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Dye Capture | Carbon-alginate bead research",
     description:
-      "Coconut-shell carbon sealed inside alginate beads removed up to 84% of Reactive Blue 140 in this student study.",
+      "Uncoated carbon-alginate beads at 20% carbon removed 84% of Reactive Blue 140; a chitosan coating cut that to 41%.",
     type: "article",
     url: siteUrl,
     siteName: "Dye Capture",
@@ -48,11 +48,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Dye Capture | Carbon-alginate bead research",
-    description: "An interactive account of a student dye-removal experiment.",
+    description: "An interactive account of a dye-removal experiment with carbon-alginate beads.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
-  other: { "x-build": "gitv16" },
+  other: { "x-build": "gitv17" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -74,8 +74,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               alternateName: meta.subtitle,
               url: siteUrl,
               abstract: meta.headline,
-              author: meta.team.map((name) => ({ "@type": "Person", name })),
-              sourceOrganization: { "@type": "Organization", name: meta.org },
+              author: meta.authors.map((name) => ({ "@type": "Person", name })),
+              sourceOrganization: { "@type": "Organization", name: `${meta.org}, ${meta.program}` },
               about: [
                 "Reactive Blue 140",
                 "activated carbon adsorption",

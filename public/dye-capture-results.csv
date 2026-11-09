@@ -1,7 +1,7 @@
-formulation,coating,carbon_loading_percent,dye_removed_mean_percent_n3,swelling_mean_percent_n3,selectivity_index_from_means,approx_coating_group_water_absorbed_ml
-0-U,Uncoated,0,16.6,32.5,0.51,2
-10-U,Uncoated,10,44.5,37.0,1.20,2
-20-U,Uncoated,20,84.0,39.8,2.11,2
-0-C,Chitosan-coated,0,13.9,62.3,0.22,7
-10-C,Chitosan-coated,10,19.5,66.5,0.29,7
-20-C,Chitosan-coated,20,40.7,68.3,0.60,7
+formulation,coating,carbon_loading_wt_percent_of_alginate,apparent_dye_removal_mean_percent,apparent_dye_removal_sd,wet_mass_gain_mean_percent,wet_mass_gain_sd,tukey_group,coating_group_solution_volume_decrease_ml
+0-U,Uncoated,0,16.6,2.1,32.5,0.3,a,2
+10-U,Uncoated,10,44.5,2.5,37.0,0.7,b,2
+20-U,Uncoated,20,84.0,5.3,39.8,0.1,c,2
+0-C,Chitosan-coated,0,13.8,2.7,62.3,0.9,a,7
+10-C,Chitosan-coated,10,19.5,5.0,66.5,0.5,a,7
+20-C,Chitosan-coated,20,40.6,1.8,68.3,0.1,b,7

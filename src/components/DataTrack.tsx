@@ -1,24 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { useInView } from "@/hooks/useInView";
 
 const ITEMS = [
-  "84.0% dye removed",
-  "2.11 selectivity index",
-  "18 vials",
+  "84.0% apparent dye removal",
+  "43.3 points lost to coating at 20% carbon",
+  "18 treatment flasks",
   "3 replicates per formulation",
-  "Reactive Blue 140",
+  "Reactive Blue 140, pH 4",
+  "Carbon × coating interaction p < 0.001",
   "20% carbon, uncoated",
 ];
 
 export default function DataTrack() {
   const [paused, setPaused] = useState(false);
+  const { ref, inView } = useInView<HTMLElement>("10% 0px");
 
   return (
-    <aside aria-label="Key study measurements" className="relative overflow-hidden border-y border-cream/20 bg-ink py-5 pr-24 text-cream">
+    <aside ref={ref} aria-label="Key study measurements" className="relative overflow-hidden border-y border-cream/20 bg-ink py-5 pr-24 text-cream">
       <div
         className="data-track flex w-max items-center whitespace-nowrap font-mono text-xs uppercase tracking-[0.16em] sm:text-sm"
-        style={{ animationPlayState: paused ? "paused" : "running" }}
+        style={{ animationPlayState: paused || !inView ? "paused" : "running" }}
       >
         {[0, 1].map((copy) => (
           <div key={copy} aria-hidden={copy === 1 ? "true" : undefined} className="flex items-center">
