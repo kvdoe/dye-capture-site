@@ -3,7 +3,6 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Trailer from "@/components/Trailer";
 import Problem from "@/components/Problem";
-import Hypotheses from "@/components/Hypotheses";
 import CinematicResults from "@/components/CinematicResults";
 import DataTrack from "@/components/DataTrack";
 import BigFinding from "@/components/BigFinding";
@@ -25,7 +24,6 @@ export default function Home() {
         <Problem />
         <Poster />
         <StudyPages />
-        <Hypotheses />
         <CinematicResults />
         <DataTrack />
         <BigFinding />

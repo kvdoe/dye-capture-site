@@ -8,7 +8,7 @@ An interactive research website for:
 
 Live site: [dye-capture-site.vercel.app](https://dye-capture-site.vercel.app/)
 
-The site presents the experiment as a scroll-directed visual narrative. The home page carries the context, hypotheses, interactive results chamber, statistics, conclusion, poster and figures, photo archive, and trailer. The four materials and the five-step protocol each have their own page (`/materials`, `/protocol`).
+The site presents the experiment as a scroll-directed visual narrative. The home page carries the context, poster, interactive results chamber, statistics, conclusion, poster and figures, photo archive, and trailer. The four materials and the five-step protocol each have their own page (`/materials`, `/protocol`).
 
 Generated imagery is never used as experimental evidence. The bead, vial, procedure, and result photographs are the original project images and should not be recolored.
 
@@ -40,11 +40,11 @@ Edit [`src/lib/data.ts`](src/lib/data.ts).
 This file contains:
 
 - Research title, authors, and mentors
-- Research question, context, and hypotheses
+- Research question and context
 - Material descriptions
 - Five protocol steps
 - Apparent dye removal and wet-bead mass gain (mean and SD of three flasks), coating penalty, Tukey groups, and the two-way ANOVA summary
-- Discussion, conclusions, limitations, future work, references, and poster figure captions
+- Discussion, conclusions, limitations, future work, and references
 
 All means and SDs come from the 18 per-flask values in `public/dye-capture-vials.csv`. Solution-volume decrease is a coating-group observation read to the nearest mL.
 
@@ -56,12 +56,11 @@ The active visual sections are:
 
 - `src/components/Hero.tsx` and `src/components/DyeFlowCanvas.tsx`
 - `src/components/Problem.tsx`
-- `src/components/Hypotheses.tsx`
 - `src/components/CinematicResults.tsx` (interactive chamber, results table, statistics)
 - `src/components/DataTrack.tsx`
 - `src/components/BigFinding.tsx`
 - `src/components/Conclusion.tsx` (discussion, conclusion, limitations, next experiments)
-- `src/components/Poster.tsx` (poster plus the seven poster figures)
+- `src/components/Poster.tsx`
 - `src/components/StudyPages.tsx` (links to the materials and protocol pages)
 - `src/components/Gallery.tsx`
 - `src/components/Trailer.tsx`
@@ -94,7 +93,6 @@ Replace these files when the poster changes:
 
 - `public/poster.png` for the on-page preview (3024 x 2592)
 - `public/poster.pdf` for the downloadable document
-- `public/figures/*.png` for the seven poster figures (captions live in `figures` in `src/lib/data.ts`)
 
 Keep the same filenames so no component changes are needed.
 
