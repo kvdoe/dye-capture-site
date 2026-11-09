@@ -61,7 +61,7 @@ export default function Materials() {
           The materials used in this study.
         </h1>
         <p className="mt-6 max-w-[64ch] text-base leading-relaxed text-ink/70">
-          Four materials, six formulations. Carbon loading is given as wt% of coconut-shell activated carbon relative to the alginate solids: 0.20 g and 0.40 g of carbon per 2.00 g of alginate for the 10% and 20% beads.
+          Carbon loading is given as wt% of coconut-shell activated carbon relative to the alginate solids: 0.20 g and 0.40 g of carbon per 2.00 g of alginate for the 10% and 20% beads.
         </p>
 
         <div className="mt-12 h-px w-full overflow-hidden bg-ink/15">
@@ -119,7 +119,7 @@ export default function Materials() {
             <span className="click-cue text-teal">Try it</span>
             Tap or hover each material panel above to expand its role.
           </p>
-          <p className="hidden font-mono text-xs md:block">Four materials, six formulations</p>
+          <p className="hidden font-mono text-xs md:block">Six formulations from four materials</p>
         </div>
       </div>
     </section>

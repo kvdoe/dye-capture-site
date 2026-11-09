@@ -11,10 +11,10 @@ export default function Hypotheses() {
             <div>
               <p className="kicker text-teal">Design and hypotheses</p>
               <h2 id="hypotheses-heading" className="mt-5 max-w-[16ch] text-[clamp(2rem,3.6vw,3.8rem)] leading-[0.96]">
-                Three carbon loadings, two surfaces, eighteen flasks.
+                Two variables, tested independently and in combination.
               </h2>
               <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-ink/70">
-                A 3 x 2 factorial design: 0, 10, and 20 wt% coconut-shell activated carbon relative to alginate solids, each uncoated or chitosan-coated, with three replicate flasks per formulation plus dye-only controls. {meta.venue}.
+                Activated carbon loading was set at 0, 10, or 20 wt% relative to alginate solids, and each loading was prepared uncoated and chitosan-coated. Every formulation was run in three replicate flasks alongside dye-only controls, giving 18 treatment flasks. Poster prepared for the {meta.venue}.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link href="/materials" className="action-secondary">

@@ -198,7 +198,7 @@ function DesktopFilm() {
         <div className="relative z-30 flex h-full w-[38%] min-w-[29rem] flex-col px-[clamp(2.5rem,4vw,5.5rem)] pb-6 pt-[clamp(4.5rem,7vh,6rem)]">
           <div>
             <h2 className="max-w-full text-[clamp(1.8rem,2.3vw,3rem)] leading-[0.95] text-cream">
-              Five steps. Six formulations. Eighteen flasks.
+              From alginate powder to measured removal in five steps.
             </h2>
             <p className="mt-5 max-w-[44ch] text-[clamp(0.88rem,1.05vw,1.05rem)] leading-relaxed text-cream/70">
               {methodIntroduction}
@@ -260,7 +260,7 @@ function ReducedMotionDesktop() {
     <div className="protocol-reduced hidden bg-ink text-cream">
       <header className="container-x border-b border-cream/15 py-24">
         <h2 className="max-w-[16ch] text-[clamp(2.6rem,4.4vw,4.6rem)] leading-[0.94]">
-          Five steps. Six formulations. Eighteen flasks.
+          From alginate powder to measured removal in five steps.
         </h2>
         <p className="mt-7 max-w-[58ch] text-lg leading-relaxed text-cream/68">{methodIntroduction}</p>
       </header>
@@ -318,7 +318,7 @@ function MobileScenes() {
               {index === 0 && (
                 <div className="absolute inset-x-0 top-0 z-10 px-5 pt-8 sm:px-8 sm:pt-12">
                   <h2 className="max-w-full text-[clamp(1.9rem,8vw,3.4rem)] leading-[0.94]">
-                    Five steps. Six formulations. Eighteen flasks.
+                    From alginate powder to measured removal in five steps.
                   </h2>
                 </div>
               )}

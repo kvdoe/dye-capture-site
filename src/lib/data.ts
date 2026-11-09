@@ -8,7 +8,7 @@
 export const meta = {
   title:
     "The Effects of Carbon Loading and Chitosan Coating on Activated Carbon-Alginate Beads for Reactive Textile Dye Removal",
-  subtitle: "A 3 x 2 factorial study of carbon loading and a post-gelation chitosan coating",
+  subtitle: "How carbon loading and a post-gelation chitosan coating affect dye removal and bead hydration",
   dye: "Procion MX Turquoise (C.I. Reactive Blue 140)",
   org: "The University of Texas at Austin",
   program: "College of Natural Sciences",

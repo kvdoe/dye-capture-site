@@ -6,14 +6,14 @@ const PAGES = [
   {
     href: "/materials",
     kicker: "Materials",
-    title: "Four materials, six formulations.",
+    title: "The materials behind the beads.",
     body: "Coconut-shell activated carbon, sodium alginate, chitosan, and Reactive Blue 140, with the role each one played.",
     photo: "/photos/material-carbon.png",
   },
   {
     href: "/protocol",
     kicker: "Protocol",
-    title: "Five steps. Six formulations. Eighteen flasks.",
+    title: "How the experiment was run.",
     body: "How the beads were made, coated, dosed, shaken for 24 hours, and measured with ImageJ.",
     photo: "/photos/img-9557.jpg",
   },
