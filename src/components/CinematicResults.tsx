@@ -172,9 +172,6 @@ export default function CinematicResults() {
   const activeCarbon = carbonLevels[activeIndex];
   const currentRemoval = dyeRemoval[coating][activeIndex];
   const currentSwelling = massGain[coating][activeIndex];
-  const currentRemovalSd = dyeRemovalSd[coating][activeIndex];
-  const currentSwellingSd = massGainSd[coating][activeIndex];
-  const currentGroup = tukeyGroups[coating][activeIndex];
   const currentWater = waterAbsorbed[coating];
   const currentBeadVisual = beadVisual(activeCarbon);
 
@@ -479,7 +476,7 @@ export default function CinematicResults() {
           <header className="grid gap-6 border-b border-white/15 pb-6 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.58fr)] lg:items-end lg:gap-12">
             <div>
               <p className="font-mono text-[0.66rem] uppercase tracking-[0.22em] text-[#60a5fa]">
-                Interactive results, mean ± SD, n = 3 flasks per formulation
+                Interactive results
               </p>
               <h2
                 id="cinematic-results-heading"
@@ -651,7 +648,7 @@ export default function CinematicResults() {
               <div className="absolute bottom-5 left-5 right-5 z-30 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-white/20 bg-[#05070f]/65 pt-4 backdrop-blur-md sm:grid-cols-3">
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Apparent dye removal
+                    Dye removed
                   </p>
                   <span
                     ref={removalNumberRef}
@@ -660,13 +657,10 @@ export default function CinematicResults() {
                   >
                     {formatRemoval(currentRemoval)}
                   </span>
-                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
-                    ± {currentRemovalSd.toFixed(1)} SD · Tukey group {currentGroup}
-                  </span>
                 </div>
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Wet-bead mass gain
+                    Bead mass gain
                   </p>
                   <span
                     ref={swellingNumberRef}
@@ -675,13 +669,10 @@ export default function CinematicResults() {
                   >
                     {currentSwelling.toFixed(1)}%
                   </span>
-                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
-                    ± {currentSwellingSd.toFixed(1)} SD, vs 4.00 g start
-                  </span>
                 </div>
                 <div data-metric-label>
                   <p className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-white/48">
-                    Solution drawn into beads
+                    Water absorbed
                   </p>
                   <span aria-hidden="true" className="mt-1 block font-mono text-[clamp(1.2rem,2.3vw,1.95rem)] leading-tight tabular-nums text-[#f4f7ff]">
                     <span className="block text-[0.5em] uppercase tracking-[0.1em] text-white/55">about</span>
@@ -689,14 +680,11 @@ export default function CinematicResults() {
                       {currentWater} mL
                     </span>
                   </span>
-                  <span aria-hidden="true" className="block font-mono text-[0.62rem] text-white/55">
-                    of 40.0 mL, coating-group mean
-                  </span>
                 </div>
               </div>
 
               <p className="sr-only" aria-live="polite">
-                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Apparent dye removal {formatRemoval(currentRemoval)} plus or minus {currentRemovalSd.toFixed(1)}, Tukey group {currentGroup}. Wet-bead mass gain {currentSwelling.toFixed(1)}%. Solution drawn into beads about {currentWater} mL.
+                {activeCarbon}% carbon, {coating === "uncoated" ? "uncoated" : "chitosan-coated"}. Dye removed {formatRemoval(currentRemoval)}. Bead mass gain {currentSwelling.toFixed(1)}%. Water absorbed about {currentWater} mL.
               </p>
             </div>
 
@@ -844,7 +832,7 @@ export default function CinematicResults() {
                       data-pair
                       aria-pressed={active}
                       onClick={() => setCoating(mode)}
-                      className={`grid w-full grid-cols-[minmax(8rem,0.72fr)_repeat(3,minmax(0,1fr))] items-center gap-3 border-b border-white/15 py-4 text-left transition-colors last:border-b-0 ${
+                      className={`grid w-full grid-cols-[minmax(8rem,0.9fr)_repeat(2,minmax(0,1fr))] items-center gap-3 border-b border-white/15 py-4 text-left transition-colors last:border-b-0 ${
                         active ? "text-[#f4f7ff]" : "text-[#f4f7ff]/48 hover:text-[#f4f7ff]/80"
                       }`}
                     >
@@ -880,20 +868,11 @@ export default function CinematicResults() {
                         </span>
                         {massGain[mode][activeIndex].toFixed(1)}%
                       </span>
-                      <span className="font-mono text-sm tabular-nums">
-                        <span className="block text-[0.52rem] uppercase tracking-[0.12em] text-white/36">
-                          Tukey group
-                        </span>
-                        {tukeyGroups[mode][activeIndex]}
-                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              <p className="border-t border-white/15 py-3 font-mono text-[0.58rem] uppercase tracking-[0.13em] text-white/40">
-                Bead color follows carbon loading. At the same loading, coating is marked only by the fine outline.
-              </p>
             </div>
           </div>
         </div>
